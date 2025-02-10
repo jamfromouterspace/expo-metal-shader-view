@@ -1,0 +1,10 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "paths": {
+      "expo-metal-shader-view": ["../src/index"],
+      "expo-metal-shader-view/*": ["../src/*"]
+    }
+  }
+}
