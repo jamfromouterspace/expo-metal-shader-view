@@ -100,7 +100,7 @@ class ExpoMetalShaderView: ExpoView {
     
     required init(appContext: AppContext? = nil) {
         contentView = UIHostingController(rootView: ShaderView(model: uniformsModel))
-        
+        contentView.view.backgroundColor = UIColor.clear
         super.init(appContext: appContext)
         
         clipsToBounds = true
