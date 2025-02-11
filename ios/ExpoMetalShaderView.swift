@@ -103,7 +103,7 @@ class ExpoMetalShaderView: ExpoView {
         contentView.view.backgroundColor = UIColor.clear
         super.init(appContext: appContext)
         
-        clipsToBounds = true
+        // clipsToBounds = true
         addSubview(contentView.view)
     }
     
