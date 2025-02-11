@@ -15,16 +15,16 @@ public class ExpoMetalShaderViewModule: Module {
         View(ExpoMetalShaderView.self) {
             // Defines a setter for the `url` prop.
             Prop("shader") { (view: ExpoMetalShaderView, shader: String) in
-                view.mslView.updateShader(shader: shader)
+                view.updateShader(newShader: shader)
             }
             
             Prop("isPaused") { (view: ExpoMetalShaderView, isPaused: Bool) in
-                view.mslView.setIsPaused(isPaused)
+//                view.mslView.setIsPaused(isPaused)
             }
             
             Prop("uniforms") { (view: ExpoMetalShaderView, uniforms: [String: Any]) in
                 do {
-                    let iTime = try convertFloat(uniforms["iTime"])
+//                    let iTime = try convertFloat(uniforms["iTime"])
                     let var1 = try convertFloat(uniforms["var1"])
                     let var2 = try convertFloat(uniforms["var2"])
                     let var3 = try convertFloat(uniforms["var3"])
@@ -37,7 +37,7 @@ public class ExpoMetalShaderViewModule: Module {
                         uniforms["iResolutionY"] as! Float
                     )
                     let uniforms = Uniforms(
-                        iTime: iTime,
+                        iTime: 0, // This is not used - see ShaderView
                         iResolution: iResolution,
                         var1: var1,
                         var2: var2,
@@ -46,7 +46,8 @@ public class ExpoMetalShaderViewModule: Module {
                         var5: var5,
                         var6: var6
                     )
-                    try view.mslView.updateUniforms(uniforms: uniforms)
+                    
+                    view.updateUniforms(newUniforms: uniforms)
                 } catch {
                     // todo: send event
                 }

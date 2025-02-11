@@ -28,7 +28,7 @@ public class MSLView<T>: UIView {
     private func setupMetalView() {
         metalView = MTKView(frame: self.bounds, device: MTLCreateSystemDefaultDevice())
         metalView.enableSetNeedsDisplay = true
-        metalView.isPaused = true
+        metalView.isPaused = false
         metalView.delegate = renderer
         addSubview(metalView)
     }
