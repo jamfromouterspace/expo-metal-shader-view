@@ -1,6 +1,6 @@
 {
   "name": "expo-metal-shader-view",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Render MSL (Metal Shading Language) shaders in React Native",
   "main": "build/index.js",
   "types": "build/index.d.ts",
