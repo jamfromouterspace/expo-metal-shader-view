@@ -10,6 +10,7 @@ struct ShaderView: View {
             .onReceive(timer) { time in
                 model.uniforms.iTime += 1/60
             }
+            .edgesIgnoringSafeArea(.all)
     }
     
 }
