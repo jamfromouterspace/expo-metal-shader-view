@@ -1,38 +1,38 @@
 import ExpoModulesCore
-import WebKit
+
+let DEFAULT_SHADER = """
+    fragment float4 mainImage() {
+        return float4(0.0, 0.0, 0.0, 1.0);
+    }
+"""
+
+struct Uniforms {
+    var iTime: Float
+    var iResolution: SIMD2<Float>
+    var var1: Float
+    var var2: Float
+    var var3: Float
+    var var4: Int
+    var var5: Int
+    var var6: Bool
+}
 
 // This view will be used as a native component. Make sure to inherit from `ExpoView`
 // to apply the proper styling (e.g. border radius and shadows).
 class ExpoMetalShaderView: ExpoView {
-  let webView = WKWebView()
-  let onLoad = EventDispatcher()
-  var delegate: WebViewDelegate?
-
-  required init(appContext: AppContext? = nil) {
-    super.init(appContext: appContext)
-    clipsToBounds = true
-    delegate = WebViewDelegate { url in
-      self.onLoad(["url": url])
+    let mslView: MSLView<Uniforms>!
+    let onError = EventDispatcher()
+    
+    required init(appContext: AppContext? = nil) {
+        let uniforms = Uniforms(iTime: 0, iResolution: SIMD2<Float>(), var1: 0, var2: 0, var3: 0, var4: 0, var5: 0, var6: false)
+        self.mslView = MSLView(frame: CGRect(x: 0, y: 0, width: 1024, height: 1024), shader: DEFAULT_SHADER, uniforms: uniforms)
+        super.init(appContext: appContext)
+        clipsToBounds = true
+        self.mslView.frame = bounds
+        addSubview(mslView)
     }
-    webView.navigationDelegate = delegate
-    addSubview(webView)
-  }
-
-  override func layoutSubviews() {
-    webView.frame = bounds
-  }
-}
-
-class WebViewDelegate: NSObject, WKNavigationDelegate {
-  let onUrlChange: (String) -> Void
-
-  init(onUrlChange: @escaping (String) -> Void) {
-    self.onUrlChange = onUrlChange
-  }
-
-  func webView(_ webView: WKWebView, didFinish navigation: WKNavigation) {
-    if let url = webView.url {
-      onUrlChange(url.absoluteString)
+    
+    override func layoutSubviews() {
+        mslView.frame = bounds
     }
-  }
 }

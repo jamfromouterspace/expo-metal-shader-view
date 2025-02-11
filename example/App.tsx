@@ -1,39 +1,59 @@
 import { useEvent } from 'expo';
-import ExpoMetalShaderView, { ExpoMetalShaderView } from 'expo-metal-shader-view';
-import { Button, SafeAreaView, ScrollView, Text, View } from 'react-native';
+import { ExpoMetalShaderView, Uniforms } from 'expo-metal-shader-view';
+import { useMemo } from 'react';
+import { Button, Dimensions, SafeAreaView, ScrollView, Text, View } from 'react-native';
+import Animated from "react-native-reanimated"
+const windowWidth = Dimensions.get("window").width
+const windowHeight = Dimensions.get("window").height
 
 export default function App() {
-  const onChangePayload = useEvent(ExpoMetalShaderView, 'onChange');
+  const shader = useMemo(() => {
+    return `
+      struct Uniforms {
+        float iTime;
+        float2 iResolution;
+        float var1;
+        float var2;
+        float var3;
+        int var4;
+        int var5;
+        bool var6;
+      };
+
+      fragment float4 mainImage(FragmentIn input [[stage_in]],
+                               constant Uniforms& c,
+                               constant uint2& viewSize) {
+            return float4(c.var1, 0.0, 0.0, 1.0);
+        }
+    `
+  }, [])
+
+  const uniforms: Uniforms = useMemo(() => {
+    return {
+      iTime: 0.0,
+      iResolution: [windowWidth, windowHeight],
+      var1: 1.0,
+      var2: 0.0,
+      var3: 0,
+      var4: 0,
+      var5: 0,
+      var6: false
+    }
+  }, [])
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.container}>
-        <Text style={styles.header}>Module API Example</Text>
-        <Group name="Constants">
-          <Text>{ExpoMetalShaderView.PI}</Text>
-        </Group>
-        <Group name="Functions">
-          <Text>{ExpoMetalShaderView.hello()}</Text>
-        </Group>
-        <Group name="Async functions">
-          <Button
-            title="Set value"
-            onPress={async () => {
-              await ExpoMetalShaderView.setValueAsync('Hello from JS!');
-            }}
-          />
-        </Group>
-        <Group name="Events">
-          <Text>{onChangePayload?.value}</Text>
-        </Group>
-        <Group name="Views">
-          <ExpoMetalShaderView
-            url="https://www.example.com"
-            onLoad={({ nativeEvent: { url } }) => console.log(`Loaded: ${url}`)}
-            style={styles.view}
-          />
-        </Group>
-      </ScrollView>
+      <ExpoMetalShaderView
+        style={{
+          flex: 1,
+          height: 200,
+          width: "100%"
+        }}
+        shader={shader}
+        uniforms={uniforms}
+        onError={({ nativeEvent: { error } }) => console.log(`Error: ${error}`)}
+        isPaused={false}
+      />
     </SafeAreaView>
   );
 }
