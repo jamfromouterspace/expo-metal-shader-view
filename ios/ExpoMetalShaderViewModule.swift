@@ -23,22 +23,33 @@ public class ExpoMetalShaderViewModule: Module {
             }
             
             Prop("uniforms") { (view: ExpoMetalShaderView, uniforms: [String: Any]) in
-                let iTime = uniforms["iTime"] as! Float
-                let iResolution = SIMD2<Float>(
-                    uniforms["iResolutionX"] as! Float,
-                    uniforms["iResolutionY"] as! Float
-                )
-                let uniforms = Uniforms(
-                    iTime: iTime,
-                    iResolution: iResolution,
-                    var1: uniforms["var1"] as! Float,
-                    var2: uniforms["var2"] as! Float,
-                    var3: uniforms["var3"] as! Float,
-                    var4: uniforms["var4"] as! Int,
-                    var5: uniforms["var5"] as! Int,
-                    var6: uniforms["var6"] as! Bool
-                )
-                view.mslView.updateUniforms(uniforms: uniforms)
+                do {
+                    let iTime = try convertFloat(uniforms["iTime"])
+                    let var1 = try convertFloat(uniforms["var1"])
+                    let var2 = try convertFloat(uniforms["var2"])
+                    let var3 = try convertFloat(uniforms["var3"])
+                    let var4 = try convertInt(uniforms["var4"])
+                    let var5 = try convertInt(uniforms["var5"])
+                    let var6 = try convertBool(uniforms["var6"])
+                    
+                    let iResolution = SIMD2<Float>(
+                        uniforms["iResolutionX"] as! Float,
+                        uniforms["iResolutionY"] as! Float
+                    )
+                    let uniforms = Uniforms(
+                        iTime: iTime,
+                        iResolution: iResolution,
+                        var1: var1,
+                        var2: var2,
+                        var3: var3,
+                        var4: var4,
+                        var5: var5,
+                        var6: var6
+                    )
+                    try view.mslView.updateUniforms(uniforms: uniforms)
+                } catch {
+                    // todo: send event
+                }
             }
             
             
@@ -47,3 +58,55 @@ public class ExpoMetalShaderViewModule: Module {
         }
     }
 }
+
+enum UniformTypeError: Error {
+    case invalidFloat(inputType: Any.Type)
+    case invalidInt(inputType: Any.Type)
+    case invalidBool(inputType: Any.Type)
+}
+
+
+func convertFloat(_ inputVar: Any?) throws -> Float {
+    var outputVar: Float
+    if let number = inputVar as? NSNumber {
+        outputVar = number.floatValue
+    } else if let value = inputVar as? Float {
+        outputVar = value
+    } else if let value = inputVar as? Int {
+        outputVar = Float(value)
+    } else {
+        throw UniformTypeError.invalidFloat(inputType: type(of: inputVar))
+    }
+    return outputVar
+}
+
+
+func convertInt(_ inputVar: Any?) throws -> Int {
+    var outputVar: Int
+    if let number = inputVar as? NSNumber {
+        outputVar = number.intValue
+    } else if let value = inputVar as? Int {
+        outputVar = value
+    } else if let value = inputVar as? Float {
+        outputVar = Int(value)
+    } else {
+        throw UniformTypeError.invalidInt(inputType: type(of: inputVar))
+    }
+    return outputVar
+}
+
+
+func convertBool(_ inputVar: Any?) throws -> Bool {
+    var outputVar: Bool
+    if let number = inputVar as? NSNumber {
+        outputVar = number.boolValue
+    } else if let value = inputVar as? Bool {
+        outputVar = value
+    } else if let value = inputVar as? Int {
+        outputVar = value == 0 ? false : true
+    } else {
+        throw UniformTypeError.invalidBool(inputType: type(of: inputVar))
+    }
+    return outputVar
+}
+
