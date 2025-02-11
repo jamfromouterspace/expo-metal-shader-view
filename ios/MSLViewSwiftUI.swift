@@ -33,6 +33,7 @@ public struct MSLViewSwiftUI<T> : UIViewRepresentable {
         metalView.enableSetNeedsDisplay = true
         metalView.isPaused = true
         metalView.delegate = context.coordinator.renderer
+        metalView.backgroundColor = UIColor.clear
         context.coordinator.renderer.setShader(source: shader)
         return metalView
     }
