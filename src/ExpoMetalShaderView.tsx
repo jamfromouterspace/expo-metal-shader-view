@@ -1,11 +1,15 @@
 import { requireNativeView } from 'expo';
 import * as React from 'react';
 
-import { ExpoMetalShaderViewProps } from './ExpoMetalShaderView.types';
+import { ExpoMetalShaderViewProps, ExpoMetalShaderViewRef } from './ExpoMetalShaderView.types';
 
 const NativeView: React.ComponentType<ExpoMetalShaderViewProps> =
   requireNativeView('ExpoMetalShaderView');
 
-export default function ExpoMetalShaderView(props: ExpoMetalShaderViewProps) {
-  return <NativeView {...props} />;
-}
+const ExpoMetalShaderView = React.forwardRef<ExpoMetalShaderViewRef, ExpoMetalShaderViewProps>(
+  (props, ref) => {
+    return <NativeView {...props} ref={ref} />;
+  }
+);
+
+export default ExpoMetalShaderView
