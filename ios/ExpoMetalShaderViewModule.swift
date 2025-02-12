@@ -131,8 +131,21 @@ func convertFloat(_ inputVar: Any?) throws -> Float {
     return outputVar
 }
 
+func convertInt(_ inputVar: Any?) throws -> Int {
+    var outputVar: Int
+    if let number = inputVar as? NSNumber {
+        outputVar = number.intValue
+    } else if let value = inputVar as? Int {
+        outputVar = value
+    } else if let value = inputVar as? Float {
+        outputVar = Int(value)
+    } else {
+        throw UniformTypeError.invalidInt(inputType: type(of: inputVar))
+    }
+    return outputVar
+}
 
-func convertInt(_ inputVar: Any?) throws -> Int32 {
+func convertInt32(_ inputVar: Any?) throws -> Int32 {
     var outputVar: Int32
     if let number = inputVar as? NSNumber {
         outputVar = Int32(number.intValue)

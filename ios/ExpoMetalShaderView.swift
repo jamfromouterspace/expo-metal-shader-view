@@ -16,9 +16,9 @@ struct Uniforms {
     var varCumulativeFloat2: Float
     var varCumulativeFloat3: Float
 //    var varFloatArray: SIMD32<Float>
-    var varInt1: Int32
-    var varInt2: Int32
-    var varInt3: Int32
+    var varInt1: Int
+    var varInt2: Int
+    var varInt3: Int
     var varBool1: Bool
     var varBool2: Bool
     var varBool3: Bool

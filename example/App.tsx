@@ -1,6 +1,7 @@
 import { useEvent } from 'expo';
-import { ExpoMetalShaderView, Uniforms } from 'expo-metal-shader-view';
-import { useMemo } from 'react';
+import { ExpoMetalShaderView, ExpoMetalShaderViewRef, Uniforms } from 'expo-metal-shader-view';
+import ExpoMetalShaderViewModule from 'expo-metal-shader-view/ExpoMetalShaderViewModule';
+import { useEffect, useMemo, useRef } from 'react';
 import { Button, Dimensions, SafeAreaView, ScrollView, Text, View } from 'react-native';
 import Animated from "react-native-reanimated"
 const windowWidth = Dimensions.get("window").width
@@ -28,31 +29,24 @@ export default function App() {
     `
   }, [])
 
-  const uniforms: Uniforms = useMemo(() => {
-    return {
-      iTime: 0.0,
-      iResolution: [windowWidth, windowHeight],
-      var1: 1.0,
-      var2: 0.0,
-      var3: 0,
-      var4: 0,
-      var5: 0,
-      var6: false
-    }
+  
+  const shaderRef = useRef<ExpoMetalShaderViewRef>(null)
+
+  useEffect(() => {
+    // use shaderRef.current?.updateUniforms() to update the uniforms
   }, [])
 
   return (
     <SafeAreaView style={styles.container}>
       <ExpoMetalShaderView
+        ref={shaderRef}
         style={{
           flex: 1,
           height: 200,
           width: "100%"
         }}
         shader={shader}
-        uniforms={uniforms}
         onError={({ nativeEvent: { error } }) => console.log(`Error: ${error}`)}
-        isPaused={false}
       />
     </SafeAreaView>
   );
