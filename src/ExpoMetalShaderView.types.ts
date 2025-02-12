@@ -1,8 +1,12 @@
 import { MutableRefObject, RefAttributes } from 'react';
 import type { StyleProp, View, ViewStyle } from 'react-native';
 
-export type OnErrorEventPayload = {
+export type ErrorEventPayload = {
   error: string;
+};
+
+export type ExpoMetalShaderViewModuleEvents = {
+  onError: (params: ErrorEventPayload) => void;
 };
 
 export type Uniforms =  {
@@ -29,6 +33,6 @@ export interface ExpoMetalShaderViewRef {
 
 export type ExpoMetalShaderViewProps = {
   shader: string;
-  onError: (event: { nativeEvent: OnErrorEventPayload }) => void;
+  onError: (event: { nativeEvent: ErrorEventPayload }) => void;
   style?: StyleProp<ViewStyle>;
 } & RefAttributes<ExpoMetalShaderViewRef>;
