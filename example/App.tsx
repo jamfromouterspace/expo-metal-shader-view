@@ -10,30 +10,18 @@ const windowHeight = Dimensions.get("window").height
 export default function App() {
   const shader = useMemo(() => {
     return `
-      struct Uniforms {
-        float iTime;
-        float2 iResolution;
-        float var1;
-        float var2;
-        float var3;
-        int var4;
-        int var5;
-        bool var6;
-      };
-
       fragment float4 mainImage(FragmentIn input [[stage_in]],
-                               constant Uniforms& c,
+                               constant Uniforms& uniforms,
                                constant uint2& viewSize) {
-            return float4(c.var1, 0.0, 0.0, 1.0);
-        }
+        return float4(uniforms.color1R, 0.0, 0.0, 1.0);
+      }
     `
   }, [])
 
-  
   const shaderRef = useRef<ExpoMetalShaderViewRef>(null)
 
   useEffect(() => {
-    // use shaderRef.current?.updateUniforms() to update the uniforms
+    shaderRef.current?.updateUniforms({ color1R: 0.1, color1G: 0.6, color1B: 0.8 })
   }, [])
 
   return (

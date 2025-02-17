@@ -9,6 +9,9 @@ struct ShaderView: View {
     var body: some View {
         MSLViewSwiftUI(shader: model.shader, uniforms: model.uniforms)
             .onReceive(timer) { time in
+                if model.isPaused {
+                    return
+                }
                 model.uniforms.iTime += 1/60
                 model.uniforms.iResolution = model.pendingUniforms.iResolution
                 
@@ -20,8 +23,6 @@ struct ShaderView: View {
                 model.uniforms.varCumulativeFloat2 += model.pendingUniforms.varCumulativeFloat2
                 model.uniforms.varCumulativeFloat3 += model.pendingUniforms.varCumulativeFloat3
                 
-//                model.uniforms.varFloatArray = model.pendingUniforms.varFloatArray
-                
                 model.uniforms.varInt1 = model.pendingUniforms.varInt1
                 model.uniforms.varInt2 = model.pendingUniforms.varInt2
                 model.uniforms.varInt3 = model.pendingUniforms.varInt3
@@ -29,7 +30,27 @@ struct ShaderView: View {
                 model.uniforms.varBool1 = model.pendingUniforms.varBool1
                 model.uniforms.varBool2 = model.pendingUniforms.varBool2
                 model.uniforms.varBool3 = model.pendingUniforms.varBool3
+                                
+                model.uniforms.color1R = model.pendingUniforms.color1R
+                model.uniforms.color1G = model.pendingUniforms.color1G
+                model.uniforms.color1B = model.pendingUniforms.color1B
                 
+                model.uniforms.color2R = model.pendingUniforms.color2R
+                model.uniforms.color2G = model.pendingUniforms.color2G
+                model.uniforms.color2B = model.pendingUniforms.color2B
+                
+                model.uniforms.color3R = model.pendingUniforms.color3R
+                model.uniforms.color3G = model.pendingUniforms.color3G
+                model.uniforms.color3B = model.pendingUniforms.color3B
+                                
+                model.uniforms.intensity1 = model.pendingUniforms.intensity1
+                model.uniforms.intensity2 = model.pendingUniforms.intensity2
+                model.uniforms.intensity3 = model.pendingUniforms.intensity3
+                
+                model.uniforms.bass = model.pendingUniforms.bass
+                model.uniforms.cumulativeBass += model.pendingUniforms.cumulativeBass
+                
+                model.uniforms.spectrum = model.pendingUniforms.spectrum
             }
             .edgesIgnoringSafeArea(.all)
     }

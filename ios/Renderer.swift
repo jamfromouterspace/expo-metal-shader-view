@@ -35,6 +35,50 @@ class Renderer<T>: NSObject, MTKViewDelegate {
     }
     """
     
+    let uniformStruct = """
+    struct Uniforms {
+          float   iTime;
+          float2  iResolution;
+
+          float   varFloat1;
+          float   varFloat2;
+          float   varFloat3;
+
+          float   varCumulativeFloat1;
+          float   varCumulativeFloat2;
+          float   varCumulativeFloat3;
+
+          int     varInt1;
+          int     varInt2;
+          int     varInt3;
+
+          bool    varBool1;
+          bool    varBool2;
+          bool    varBool3;
+
+          float   color1R;
+          float   color1G;
+          float   color1B;
+
+          float   color2R;
+          float   color2G;
+          float   color2B;
+
+          float   color3R;
+          float   color3G;
+          float   color3B;
+
+          float   intensity1;
+          float   intensity2;
+          float   intensity3;
+
+          float   cumulativeBass;
+          float   bass;
+
+          float   spectrum[64];
+      };
+    """
+    
     private func loadTexture(image: UIImage, rect: CGRect) throws -> MTLTexture {
         let textureLoader = MTKTextureLoader(device: device)
         let imageRef = image.cgImage!.cropping(to: rect)!
@@ -51,7 +95,7 @@ class Renderer<T>: NSObject, MTKViewDelegate {
         self.source = source
 
         do {
-            let library = try device.makeLibrary(source: vertex + source, options: nil)
+            let library = try device.makeLibrary(source: vertex + uniformStruct + source, options: nil)
 
             let rpd = MTLRenderPipelineDescriptor()
             rpd.vertexFunction = library.makeFunction(name: "__vertex__")
