@@ -1,6 +1,0 @@
-module ExpoMetalShaderView {
-  umbrella header "ExpoMetalShaderView-umbrella.h"
-
-  export *
-  module * { export * }
-}
