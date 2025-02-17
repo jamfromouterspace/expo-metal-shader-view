@@ -37,8 +37,32 @@ class Renderer<T>: NSObject, MTKViewDelegate {
     """
     
     let uniformStruct = """
+    struct Uniforms {
+        float   iTime;
+        float2  iResolution;
+
+        float   varFloat1;
+        float   varFloat2;
+        float   varFloat3;
+
+        float   varCumulativeFloat1;
+        float   varCumulativeFloat2;
+        float   varCumulativeFloat3;
+
+        float3 color1;
+        float3 color2;
+        float3 color3;
+
+        float intensity1;
+        float intensity2;
+        float intensity3;
+
+        float bass;
+        float cumulativeBass;
+
+        float spectrum[64];
+    };
     """
-    //           float   spectrum[64];
     
     private func loadTexture(image: UIImage, rect: CGRect) throws -> MTLTexture {
         let textureLoader = MTKTextureLoader(device: device)
