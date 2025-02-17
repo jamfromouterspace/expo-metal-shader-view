@@ -39,6 +39,7 @@ export interface ExpoMetalShaderViewRef {
 
 export type ExpoMetalShaderViewProps = {
   shader: string;
+  isPaused?: boolean;
   onError?: (event: { nativeEvent: ErrorEventPayload }) => void;
   style?: StyleProp<ViewStyle>;
 } & RefAttributes<ExpoMetalShaderViewRef>;

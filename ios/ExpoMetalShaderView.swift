@@ -111,7 +111,7 @@ class UniformsModel: ObservableObject {
     self.uniforms = defaultUniforms
     self.pendingUniforms = defaultUniforms
     self.shader = DEFAULT_SHADER
-      self.isPaused = false
+    self.isPaused = false
   }
 }
 
@@ -128,7 +128,6 @@ class ExpoMetalShaderView: ExpoView {
         super.init(appContext: appContext)
         
         uniformsModel.onError = { errorDict in
-            print("YOYOYOYO", errorDict)
             self.onError(errorDict)
         }
     

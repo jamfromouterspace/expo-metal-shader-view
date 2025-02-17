@@ -49,24 +49,6 @@ func parseUniforms(dict: [String: Any]) throws -> Uniforms {
     let varCumulativeFloat1 = try convertFloat(dict["varCumulativeFloat1"])
     let varCumulativeFloat2 = try convertFloat(dict["varCumulativeFloat2"])
     let varCumulativeFloat3 = try convertFloat(dict["varCumulativeFloat3"])
-    let varInt1 = try convertInt(dict["varInt1"])
-    let varInt2 = try convertInt(dict["varInt2"])
-    let varInt3 = try convertInt(dict["varInt3"])
-    let varBool1 = try convertBool(dict["varBool1"])
-    let varBool2 = try convertBool(dict["varBool2"])
-    let varBool3 = try convertBool(dict["varBool3"])
-
-    let color1R = try convertFloat(dict["color1R"])
-    let color1G = try convertFloat(dict["color1G"])
-    let color1B = try convertFloat(dict["color1B"])
-        
-    let color2R = try convertFloat(dict["color2R"])
-    let color2G = try convertFloat(dict["color2G"])
-    let color2B = try convertFloat(dict["color2B"])
-    
-    let color3R = try convertFloat(dict["color3R"])
-    let color3G = try convertFloat(dict["color3G"])
-    let color3B = try convertFloat(dict["color3B"])
     
     let intensity1 = try convertFloat(dict["intensity1"])
     let intensity2 = try convertFloat(dict["intensity2"])
