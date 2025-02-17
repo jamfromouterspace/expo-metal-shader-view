@@ -7,9 +7,46 @@ import simd
 
 let DEFAULT_SHADER = """
     fragment float4 mainImage() {
-        return float4(0.0, 0.0, 0.0, 1.0);
+        return float4(0.0, 0.0, 0.0, 0.0);
     }
 """
+
+struct FixedArray64<T> {
+    var elements: (T, T, T, T, T, T, T, T,
+                  T, T, T, T, T, T, T, T,
+                  T, T, T, T, T, T, T, T,
+                  T, T, T, T, T, T, T, T,
+                  T, T, T, T, T, T, T, T,
+                  T, T, T, T, T, T, T, T,
+                  T, T, T, T, T, T, T, T,
+                  T, T, T, T, T, T, T, T)
+    
+    init(repeating value: T) {
+        elements = (value, value, value, value, value, value, value, value,
+                   value, value, value, value, value, value, value, value,
+                   value, value, value, value, value, value, value, value,
+                   value, value, value, value, value, value, value, value,
+                   value, value, value, value, value, value, value, value,
+                   value, value, value, value, value, value, value, value,
+                   value, value, value, value, value, value, value, value,
+                   value, value, value, value, value, value, value, value)
+    }
+    
+    subscript(index: Int) -> T {
+        get {
+            precondition(index >= 0 && index < 64, "Index out of range")
+            return withUnsafeBytes(of: elements) { ptr in
+                ptr.load(fromByteOffset: index * MemoryLayout<T>.stride, as: T.self)
+            }
+        }
+        set {
+            precondition(index >= 0 && index < 64, "Index out of range")
+            withUnsafeMutableBytes(of: &elements) { ptr in
+                ptr.storeBytes(of: newValue, toByteOffset: index * MemoryLayout<T>.stride, as: T.self)
+            }
+        }
+    }
+}
 
 struct Uniforms {
     var iTime: Float
@@ -20,33 +57,19 @@ struct Uniforms {
     var varCumulativeFloat1: Float
     var varCumulativeFloat2: Float
     var varCumulativeFloat3: Float
-    var varInt1: Int
-    var varInt2: Int
-    var varInt3: Int
-    var varBool1: Bool
-    var varBool2: Bool
-    var varBool3: Bool
-
-    var color1R: Float
-    var color1G: Float
-    var color1B: Float
     
-    var color2R: Float
-    var color2G: Float
-    var color2B: Float
-    
-    var color3R: Float
-    var color3G: Float
-    var color3B: Float
+    var color1: SIMD3<Float>
+    var color2: SIMD3<Float>
+    var color3: SIMD3<Float>
     
     var intensity1: Float
     var intensity2: Float
     var intensity3: Float
-    
-    var cumulativeBass: Float
     var bass: Float
+    var cumulativeBass: Float
     
-    var spectrum: SIMD64<Float>
+    var spectrum: FixedArray64<Float>
+    
 }
 
 class UniformsModel: ObservableObject {
@@ -59,6 +82,8 @@ class UniformsModel: ObservableObject {
   @Published var shader: String
     
   @Published var isPaused: Bool
+    
+  @Published var onError: (([String : Any]) -> Void)? = nil
   
   init() {
     let defaultUniforms = Uniforms(
@@ -70,33 +95,17 @@ class UniformsModel: ObservableObject {
       varCumulativeFloat1: 0.0,
       varCumulativeFloat2: 0.0,
       varCumulativeFloat3: 0.0,
-      varInt1: 0,
-      varInt2: 0,
-      varInt3: 0,
-      varBool1: false,
-      varBool2: false,
-      varBool3: false,
-      
-      color1R: 0,
-      color1G: 0,
-      color1B: 0,
-      
-      color2R: 0,
-      color2G: 0,
-      color2B: 0,
-      
-      color3R: 0,
-      color3G: 0,
-      color3B: 0,
-      
+      color1: SIMD3<Float>(repeating: 0.0),
+      color2: SIMD3<Float>(repeating: 0.0),
+      color3: SIMD3<Float>(repeating: 0.0),
       intensity1: 0,
       intensity2: 0,
       intensity3: 0,
       
-      cumulativeBass: 0,
       bass: 0,
+      cumulativeBass: 0,
       
-      spectrum: SIMD64<Float>(repeating: 0.0)
+      spectrum: FixedArray64<Float>(repeating: 0.0)
     )
     
     self.uniforms = defaultUniforms
@@ -107,6 +116,7 @@ class UniformsModel: ObservableObject {
 }
 
 class ExpoMetalShaderView: ExpoView {
+    let onError = EventDispatcher()
     
     private let contentView: UIHostingController<ShaderView>
     
@@ -117,6 +127,11 @@ class ExpoMetalShaderView: ExpoView {
         contentView.view.backgroundColor = UIColor.clear
         super.init(appContext: appContext)
         
+        uniformsModel.onError = { errorDict in
+            print("YOYOYOYO", errorDict)
+            self.onError(errorDict)
+        }
+    
         // clipsToBounds = true
         addSubview(contentView.view)
     }

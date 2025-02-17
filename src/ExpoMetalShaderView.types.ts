@@ -2,7 +2,7 @@ import { MutableRefObject, RefAttributes } from 'react';
 import type { StyleProp, View, ViewStyle } from 'react-native';
 
 export type ErrorEventPayload = {
-  error: string;
+  message: string;
 };
 
 export type ExpoMetalShaderViewModuleEvents = {
@@ -17,24 +17,10 @@ export type Uniforms =  {
   varCumulativeFloat1: number;
   varCumulativeFloat2: number;
   varCumulativeFloat3: number;
-  varInt1: number;
-  varInt2: number;
-  varInt3: number;
-  varBool1: boolean;
-  varBool2: boolean;
-  varBool3: boolean;
 
-  color1R: number;
-  color1G: number;
-  color1B: number;
-
-  color2R: number;
-  color2G: number;
-  color2B: number;
-
-  color3R: number;
-  color3G: number;
-  color3B: number;
+  color1: [number, number, number];
+  color2: [number, number, number];
+  color3: [number, number, number];
 
   intensity1: number;
   intensity2: number;
@@ -53,6 +39,6 @@ export interface ExpoMetalShaderViewRef {
 
 export type ExpoMetalShaderViewProps = {
   shader: string;
-  onError: (event: { nativeEvent: ErrorEventPayload }) => void;
+  onError?: (event: { nativeEvent: ErrorEventPayload }) => void;
   style?: StyleProp<ViewStyle>;
 } & RefAttributes<ExpoMetalShaderViewRef>;

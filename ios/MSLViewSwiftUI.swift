@@ -9,10 +9,12 @@ public struct MSLViewSwiftUI<T> : UIViewRepresentable {
 
     var shader: String
     var uniforms: T
+    var onError: (([String: Any]) -> Void)?
 
-    public init(shader: String, uniforms: T) {
+    public init(shader: String, uniforms: T, onError: (([String: Any]) -> Void)?) {
         self.shader = shader
         self.uniforms = uniforms
+        self.onError = onError
     }
 
     public class Coordinator {
@@ -34,14 +36,15 @@ public struct MSLViewSwiftUI<T> : UIViewRepresentable {
         metalView.isPaused = true
         metalView.delegate = context.coordinator.renderer
         metalView.backgroundColor = UIColor.clear
+        context.coordinator.renderer.onError = onError
         context.coordinator.renderer.setShader(source: shader)
         return metalView
     }
 
     public func updateUIView(_ uiView: UIViewType, context: Context) {
+        context.coordinator.renderer.onError = onError
         context.coordinator.renderer.setShader(source: shader)
         context.coordinator.renderer.uniforms = uniforms
         uiView.setNeedsDisplay()
     }
-
 }

@@ -25,6 +25,7 @@ public class ExpoMetalShaderViewModule: Module {
             AsyncFunction("updateUniforms") { (view: ExpoMetalShaderView, newUniforms: [String: Any]) in
                 // Convert your `[String: Any]` into a `Uniforms` struct
                 do {
+//                    print("new uniforms", newUniforms)
                     let uniforms = try parseUniforms(dict: newUniforms)
                     // Push to the view WITHOUT causing SwiftUI re-render (see next steps)
                     view.updateUniforms(newUniforms: uniforms)
@@ -58,7 +59,7 @@ func parseUniforms(dict: [String: Any]) throws -> Uniforms {
     let color1R = try convertFloat(dict["color1R"])
     let color1G = try convertFloat(dict["color1G"])
     let color1B = try convertFloat(dict["color1B"])
-    
+        
     let color2R = try convertFloat(dict["color2R"])
     let color2G = try convertFloat(dict["color2G"])
     let color2B = try convertFloat(dict["color2B"])
@@ -75,11 +76,38 @@ func parseUniforms(dict: [String: Any]) throws -> Uniforms {
     let bass = try convertFloat(dict["bass"])
     
     // Convert spectrum array
-    var spectrum = SIMD64<Float>(repeating: 0)
+    var spectrum = FixedArray64<Float>(repeating: 0.0)
     if let spectrumArray = dict["spectrum"] as? [Any] {
         for (index, value) in spectrumArray.enumerated() {
             if index < 64 {
                 spectrum[index] = try convertFloat(value)
+            }
+        }
+    }
+    
+    var color1 = SIMD3<Float>(repeating: 0)
+    if let colorArray = dict["color1"] as? [Any] {
+        for (index, value) in colorArray.enumerated() {
+            if index < 3 {
+                color1[index] = try convertFloat(value)
+            }
+        }
+    }
+    
+    var color2 = SIMD3<Float>(repeating: 0)
+    if let colorArray = dict["color2"] as? [Any] {
+        for (index, value) in colorArray.enumerated() {
+            if index < 3 {
+                color2[index] = try convertFloat(value)
+            }
+        }
+    }
+    
+    var color3 = SIMD3<Float>(repeating: 0)
+    if let colorArray = dict["color3"] as? [Any] {
+        for (index, value) in colorArray.enumerated() {
+            if index < 3 {
+                color3[index] = try convertFloat(value)
             }
         }
     }
@@ -98,31 +126,16 @@ func parseUniforms(dict: [String: Any]) throws -> Uniforms {
         varCumulativeFloat2: varCumulativeFloat2,
         varCumulativeFloat3: varCumulativeFloat3,
 
-        varInt1: varInt1,
-        varInt2: varInt2,
-        varInt3: varInt3,
-        varBool1: varBool1,
-        varBool2: varBool2,
-        varBool3: varBool3,
-        
-        color1R: color1R,
-        color1G: color1G,
-        color1B: color1B,
-        
-        color2R: color2R,
-        color2G: color2G,
-        color2B: color2B,
-        
-        color3R: color3R,
-        color3G: color3G,
-        color3B: color3B,
+        color1: color1,
+        color2: color2,
+        color3: color3,
         
         intensity1: intensity1,
         intensity2: intensity2,
         intensity3: intensity3,
-        
-        cumulativeBass: cumulativeBass,
+       
         bass: bass,
+        cumulativeBass: cumulativeBass,
         
         spectrum: spectrum
     )

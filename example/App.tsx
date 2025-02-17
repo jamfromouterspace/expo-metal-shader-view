@@ -21,7 +21,7 @@ export default function App() {
   const shaderRef = useRef<ExpoMetalShaderViewRef>(null)
 
   useEffect(() => {
-    shaderRef.current?.updateUniforms({ color1R: 0.1, color1G: 0.6, color1B: 0.8 })
+    shaderRef.current?.updateUniforms({ color1: [0.1, 0.6, 0.8] })
   }, [])
 
   return (
@@ -34,7 +34,7 @@ export default function App() {
           width: "100%"
         }}
         shader={shader}
-        onError={({ nativeEvent: { error } }) => console.log(`Error: ${error}`)}
+        onError={({ nativeEvent: { message } }) => console.log(`Error: ${message}`)}
       />
     </SafeAreaView>
   );
