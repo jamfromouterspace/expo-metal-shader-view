@@ -7,7 +7,7 @@ export * from  './ExpoMetalShaderView.types';
 
 // Import the native module. On web, it will be resolved to ExpoAudioFFT.web.ts
 // and on native platforms to ExpoAudioFFT.ts
-import ExpoAudioFFTModule from "./ExpoAudioFFTModule";
+import ExpoMetalShaderViewModule from "./ExpoMetalShaderViewModule";
 import ExpoMetalShaderView from "./ExpoMetalShaderView";
 import {
   ChangeEventPayload,
@@ -16,38 +16,38 @@ import {
 import { EventEmitter } from 'expo';
 
 // Get the native constant value.
-export const PI = ExpoAudioFFTModule.PI;
+export const PI = ExpoMetalShaderViewModule.PI;
 
 export function hello(): string {
-  return ExpoAudioFFTModule.hello();
+  return ExpoMetalShaderViewModule.hello();
 }
 
 export async function init(enableFFT = true): Promise<string> {
-  return ExpoAudioFFTModule.init(enableFFT);
+  return ExpoMetalShaderViewModule.init(enableFFT);
 }
 
 export async function load(localUri: string): Promise<string> {
-  return ExpoAudioFFTModule.load(localUri);
+  return ExpoMetalShaderViewModule.load(localUri);
 }
 
 export async function play(): Promise<string> {
-  return ExpoAudioFFTModule.play();
+  return ExpoMetalShaderViewModule.play();
 }
 
 export async function pause(): Promise<string> {
-  return ExpoAudioFFTModule.pause();
+  return ExpoMetalShaderViewModule.pause();
 }
 
 export async function stop(): Promise<string> {
-  return ExpoAudioFFTModule.pause();
+  return ExpoMetalShaderViewModule.pause();
 }
 
 export async function seek(toSeconds: number): Promise<string> {
-  return ExpoAudioFFTModule.seek(toSeconds);
+  return ExpoMetalShaderViewModule.seek(toSeconds);
 }
 
 export function currentTime(): number {
-  return ExpoAudioFFTModule.currentTime();
+  return ExpoMetalShaderViewModule.currentTime();
 }
 
 export type AudioMetadata = {
@@ -58,7 +58,7 @@ export type AudioMetadata = {
 };
 
 export function getMetadata(localUri: string): Promise<AudioMetadata> {
-  return ExpoAudioFFTModule.getMetadata(localUri);
+  return ExpoMetalShaderViewModule.getMetadata(localUri);
 }
 
 export function setBandingOptions(
@@ -70,18 +70,18 @@ export function setBandingOptions(
     | "min"
     | "max" = "logarithmic"
 ): Promise<void> {
-  return ExpoAudioFFTModule.setBandingOptions(numBands, bandingMethod);
+  return ExpoMetalShaderViewModule.setBandingOptions(numBands, bandingMethod);
 }
 
 export async function getWaveformData(
   localUri: string,
   sampleCount: number
 ): Promise<number[]> {
-  return await ExpoAudioFFTModule.getWaveformData(localUri, sampleCount);
+  return await ExpoMetalShaderViewModule.getWaveformData(localUri, sampleCount);
 }
 
 const emitter = new EventEmitter(
-  ExpoAudioFFTModule
+  ExpoMetalShaderViewModule
   //  ?? NativeModulesProxy.ExpoAudioFFT
 );
 

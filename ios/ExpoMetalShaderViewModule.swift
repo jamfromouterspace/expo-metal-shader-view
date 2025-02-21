@@ -2,7 +2,7 @@ import ExpoModulesCore
 import UIKit
 import MobileCoreServices
 
-public class ExpoAudioFFTModule: Module {
+public class ExpoMetalShaderViewModule: Module {
     private var audioProcessor: AudioProcessor?
     private var shaderViewRef: ExpoMetalShaderView? = nil
   // Each module class must implement the definition function. The definition consists of components
