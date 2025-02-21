@@ -18,9 +18,9 @@ export type Uniforms =  {
   varCumulativeFloat2: number;
   varCumulativeFloat3: number;
 
-  color1: [number, number, number];
-  color2: [number, number, number];
-  color3: [number, number, number];
+  color1: number[];
+  color2: number[];
+  color3: number[];
 
   intensity1: number;
   intensity2: number;
