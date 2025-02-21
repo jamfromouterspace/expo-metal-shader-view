@@ -29,13 +29,20 @@ struct ShaderView: View {
                 model.uniforms.intensity1 = model.pendingUniforms.intensity1
                 model.uniforms.intensity2 = model.pendingUniforms.intensity2
                 model.uniforms.intensity3 = model.pendingUniforms.intensity3
-                
-                model.uniforms.bass = model.pendingUniforms.bass
-                model.uniforms.cumulativeBass += model.pendingUniforms.cumulativeBass
 
                 model.uniforms.moveToMusic = model.pendingUniforms.moveToMusic
                 
-                model.uniforms.spectrum = model.pendingUniforms.spectrum
+                model.uniforms.spectrum = model.spectrum
+                
+                // Average the first 4 bands of the spectrum for a punchy bass value
+                let bassRange = 14 // First 4 bands contain sub-bass and bass frequencies
+                var bassSum: Float = 0
+                for i in 0..<bassRange {
+                    bassSum += model.spectrum[i]
+                }
+                model.uniforms.bass = bassSum / Float(bassRange)
+                model.uniforms.cumulativeBass += model.uniforms.bass
+                
             }
             .edgesIgnoringSafeArea(.all)
     }

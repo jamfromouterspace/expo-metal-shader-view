@@ -85,6 +85,8 @@ class UniformsModel: ObservableObject {
   @Published var isPaused: Bool
     
   @Published var onError: (([String : Any]) -> Void)? = nil
+    
+  var spectrum = FixedArray64<Float>(repeating: 0.0)
   
   init() {
     let defaultUniforms = Uniforms(
@@ -156,6 +158,12 @@ class ExpoMetalShaderView: ExpoView {
     func updateIsPaused(isPaused: Bool) {
         DispatchQueue.main.async {
             self.uniformsModel.isPaused = isPaused
+        }
+    }
+    
+    func updateSpectrum(spectrum: FixedArray64<Float>) {
+        DispatchQueue.main.async {
+            self.uniformsModel.spectrum = spectrum
         }
     }
 }
