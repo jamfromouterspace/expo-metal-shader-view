@@ -60,6 +60,8 @@ class Renderer<T>: NSObject, MTKViewDelegate {
         float bass;
         float cumulativeBass;
 
+        float moveToMusic;
+
         float spectrum[64];
     };
     """

@@ -32,6 +32,8 @@ struct ShaderView: View {
                 
                 model.uniforms.bass = model.pendingUniforms.bass
                 model.uniforms.cumulativeBass += model.pendingUniforms.cumulativeBass
+
+                model.uniforms.moveToMusic = model.pendingUniforms.moveToMusic
                 
                 model.uniforms.spectrum = model.pendingUniforms.spectrum
             }

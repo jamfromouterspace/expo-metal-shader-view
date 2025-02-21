@@ -67,6 +67,7 @@ struct Uniforms {
     var intensity3: Float
     var bass: Float
     var cumulativeBass: Float
+    var moveToMusic: Float
     
     var spectrum: FixedArray64<Float>
     
@@ -104,6 +105,7 @@ class UniformsModel: ObservableObject {
       
       bass: 0,
       cumulativeBass: 0,
+      moveToMusic: 1.0,
       
       spectrum: FixedArray64<Float>(repeating: 0.0)
     )

@@ -55,6 +55,7 @@ func parseUniforms(dict: [String: Any]) throws -> Uniforms {
     let intensity3 = try convertFloat(dict["intensity3"])
     
     let cumulativeBass = try convertFloat(dict["cumulativeBass"])
+    let moveToMusic = try convertFloat(dict["moveToMusic"])
     let bass = try convertFloat(dict["bass"])
     
     // Convert spectrum array
@@ -119,7 +120,8 @@ func parseUniforms(dict: [String: Any]) throws -> Uniforms {
         bass: bass,
         cumulativeBass: cumulativeBass,
         
-        spectrum: spectrum
+        spectrum: spectrum,
+        moveToMusic: moveToMusic
     )
 }
 

@@ -31,6 +31,8 @@ export type Uniforms =  {
 
   /** 64 element array */
   spectrum: number[];
+
+  moveToMusic: number
 }
 
 export interface ExpoMetalShaderViewRef {
