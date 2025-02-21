@@ -120,8 +120,8 @@ func parseUniforms(dict: [String: Any]) throws -> Uniforms {
         bass: bass,
         cumulativeBass: cumulativeBass,
         
-        spectrum: spectrum,
-        moveToMusic: moveToMusic
+        moveToMusic: moveToMusic,
+        spectrum: spectrum
     )
 }
 

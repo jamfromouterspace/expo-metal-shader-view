@@ -29,10 +29,10 @@ export type Uniforms =  {
   cumulativeBass: number;
   bass: number;
 
+  moveToMusic: number;
   /** 64 element array */
   spectrum: number[];
 
-  moveToMusic: number
 }
 
 export interface ExpoMetalShaderViewRef {
