@@ -106,6 +106,11 @@ class AudioProcessor {
     init (
         onData: @escaping (_ rawMagnitudes: [Float], _ bandMagnitudes: [Float], _ bandFrequencies: [Float], _ loudness: Float, _ currentTime: Double) -> Void) throws
     {
+        do {
+            try AVAudioSession.sharedInstance().setPreferredIOBufferDuration(0.0058)
+        } catch {
+            print("failed to set preferred io buffer duration \(error)")
+        }
         self.onData = onData
         try startEngine()
     }
@@ -172,6 +177,7 @@ class AudioProcessor {
                     }
                     setCurrentTime()
                     // send to JS thread
+                    print("onData", bandMagnitudes[0])
                     onData(fftMagnitudes, bandMagnitudes, bandFrequencies, loudness, currentTime)
                     if metadata != nil && currentTime >= metadata!.duration {
                         player.pause()
