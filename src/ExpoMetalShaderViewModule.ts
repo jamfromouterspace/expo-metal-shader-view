@@ -1,6 +1,6 @@
 import { requireNativeModule } from 'expo-modules-core';
 
-const ExpoMetalShaderViewModule = requireNativeModule('ExpoShaderView');
+const ExpoMetalShaderViewModule = requireNativeModule('ExpoMetalShaderView');
 
 // It loads the native module object from the JSI or falls back to
 // the bridge module (from NativeModulesProxy) if the remote debugger is on.
